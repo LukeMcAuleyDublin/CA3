@@ -1,0 +1,53 @@
+﻿@page "/allapis"
+@inject HttpClient Http
+
+<h1>All available APIS</h1>
+
+@if (alldata != null)
+{
+    @foreach (Entry item in alldata.entries)
+    {
+        <div class="col-3 shadow-sm">
+            <h3>@item.API</h3>
+            <p>@item.Description</p>
+        </div>
+    }
+}
+
+
+
+@code {
+    private Root alldata;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            alldata = await Http.GetFromJsonAsync<Root>("https://api.publicapis.org/entries");
+            Console.WriteLine(alldata.count);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+
+    }
+
+    public class Entry
+    {
+        public string API { get; set; }
+        public string Description { get; set; }
+        public string Auth { get; set; }
+        public bool HTTPS { get; set; }
+        public string Cors { get; set; }
+        public string Link { get; set; }
+        public string Category { get; set; }
+    }
+
+    public class Root
+    {
+        public int count { get; set; }
+        public List<Entry> entries { get; set; }
+    }
+}
