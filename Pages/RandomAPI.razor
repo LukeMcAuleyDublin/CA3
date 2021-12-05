@@ -1,22 +1,10 @@
 ﻿@page "/random"
+
 @inject HttpClient Http
-@using System.Net;
-@using System.Net.Http;
-@using System.Net.Http.Headers;
-@using System.Threading.Tasks;
 
-<h3>RandomAPI</h3>
+<h1>Random</h1>
 
-@if (alldata == null)
-{
-    <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
-}
-
-
+@if (alldata != null)
 {
     @foreach (Entry item in alldata.entries)
     {
@@ -27,8 +15,9 @@
     }
 }
 
-@code {
 
+
+@code {
     private Root alldata;
 
     protected override async Task OnInitializedAsync()

@@ -18,6 +18,7 @@
 
 @code {
     private Root alldata;
+    private List<String> Categories;
 
     protected override async Task OnInitializedAsync()
     {
@@ -31,8 +32,25 @@
             Console.WriteLine(ex.Message);
         }
 
+        try
+        {
+            foreach (Entry e in alldata.entries)
+            {
+                if (!Categories.Contains(e.Category) && e.Category != null)
+                {
+                    Categories.Add(e.Category);
+                }
 
+                Console.WriteLine(Categories);
+            }
+        }
+        catch (Exception ex)
+			{
+            Console.WriteLine(ex.Message);
+			}
     }
+
+
 
     public class Entry
     {
