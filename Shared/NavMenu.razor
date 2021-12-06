@@ -1,41 +1,28 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Free Public API directory</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+﻿
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container">
+      <a class="navbar-brand" href="Match="NavLinkMatch.All">Free Public API Directory</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColps" aria-controls="navbarColps" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+      </button>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="allapis">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> All APIs
-            </NavLink>
-        </li>
-
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="random">
-                <span class="oi oi-random" aria-hidden="true"></span> Random API
-            </NavLink>
-        </li>
+      <div class="collapse navbar-collapse" id="navbarColps">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="allapis">All APIs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="random">Randomiser</a>
+          </li>
 
 
-    </ul>
-</div>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+    
 }

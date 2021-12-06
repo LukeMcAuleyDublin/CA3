@@ -1,24 +1,131 @@
 ﻿@page "/allapis"
 @inject HttpClient Http
 
-<h1>All available APIS</h1>
-
+<div class="text-center">
+    <h1 class="mx-4">All available APIS</h1>
+</div>
 @if (alldata != null)
-{
-    @foreach (Entry item in alldata.entries)
+
     {
-        <div class="col-3 shadow-sm">
-            <h3>@item.API</h3>
-            <p>@item.Description</p>
+    <div class="row mx-4 mx-lg-5">
+        <div class="col-lg-4 sticky-top">
+            <h3>Categories</h3>
+            <RadzenDropDown AllowClear="true" TValue="string" Style="width:300px"
+                            Data=@(apis.Select(a => a.Category).Distinct())
+                            Change=@(args => OnChange(args, "DropDown")) />
+
         </div>
-    }
+        @foreach (Entry item in alldata.entries)
+        {
+                <div class="col-lg-4"></div>
+                <div class="card h-100 col-sm-8 col-lg-8 col-8 shadow-sm mb-3">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            @item.API
+                        </h2>
+                        <h3 class="text-muted">
+                            @item.Category
+                        </h3>
+                        <p class="card-text">
+                            @item.Description
+                        </p>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="font-weight-bold">HTTPS:</p>
+                            </div>
+
+
+
+                            <div class="col-sm-4">
+                                @if (item.HTTPS == true)
+                                {
+                                    <span class="oi oi-check"></span>
+                                }
+                                @if (item.HTTPS == false)
+                                {
+                                    <span class="oi oi-x"></span>
+                                }
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="font-weight-bold">CORS:</p>
+                            </div>
+
+
+
+                            <div class="col-sm-4">
+                                @if (item.Cors == "yes")
+                                {
+                                    <span class="oi oi-check"></span>
+                                }
+                                @if (item.Cors == "no")
+                                {
+                                    <span class="oi oi-x"></span>
+                                }
+                                @if (item.Cors == "unknown")
+                                {
+                                    <span class="oi oi-question-mark"></span>
+                                }
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="font-weight-bold">Authorisation:</p>
+                            </div>
+
+
+
+                            <div class="col-sm-4">
+                                @if (item.Auth == "apiKey")
+                                {
+                                    <p>API Key</p>
+                                }
+                                @if (item.Auth == "OAuth")
+                                {
+                                    <p>OAuth</p>
+                                }
+                                @if (item.Auth == "")
+                                {
+                                    <p>None</p>
+                                }
+                            </div>
+                        </div>
+
+
+                        <a href=@item.Link target="_blank">
+                            <button class="btn btn-success">
+
+                                View
+                            </button>
+                        </a>
+                    </div>
+                    
+                </div>
+            
+
+            <div class="row"></div>
+        }
+    </div>
+    
+  
 }
 
 
 
 @code {
     private Root alldata;
-    private List<String> Categories;
+    IEnumerable<Entry> apis;
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -26,31 +133,14 @@
         {
             alldata = await Http.GetFromJsonAsync<Root>("https://api.publicapis.org/entries");
             Console.WriteLine(alldata.count);
+            apis = alldata.entries;
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-        }
 
-        try
-        {
-            foreach (Entry e in alldata.entries)
-            {
-                if (!Categories.Contains(e.Category) && e.Category != null)
-                {
-                    Categories.Add(e.Category);
-                }
-
-                Console.WriteLine(Categories);
-            }
         }
-        catch (Exception ex)
-			{
-            Console.WriteLine(ex.Message);
-			}
     }
-
-
 
     public class Entry
     {
@@ -67,5 +157,12 @@
     {
         public int count { get; set; }
         public List<Entry> entries { get; set; }
+    }
+
+    void OnChange(object value, string name)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+
+        Console.WriteLine($"{name} value changed to {str}");
     }
 }
