@@ -3,32 +3,33 @@
 
 <div class="text-center">
     <h1 class="mx-4">All available APIS</h1>
+    <h3 class="mx-4 text-muted">May take some time to load</h3>
 </div>
 @if (alldata != null)
 
     {
-    <div class="row mx-4 mx-lg-5">
-        <div class="col-lg-4 sticky-top">
-            <h3>Categories</h3>
-            <RadzenDropDown AllowClear="true" TValue="string" Style="width:300px"
-                            Data=@(apis.Select(a => a.Category).Distinct())
-                            Change=@(args => OnChange(args, "DropDown")) />
+<div class="row mx-4 mx-lg-5">
 
-        </div>
-        @foreach (Entry item in alldata.entries)
+    <div class="col-2">
+        <h3>Categories</h3>
+        @foreach (String Cat in Categories)
         {
-                <div class="col-lg-4"></div>
-                <div class="card h-100 col-sm-8 col-lg-8 col-8 shadow-sm mb-3">
+            <button class="btn btn-success m-1" @onclick="@(() => GetSelectedCategory(Cat))">@Cat</button>
+        }
+    </div>
+
+    <div class="col-10">
+        @if (isCategorySpecified == false)
+        {
+            @foreach (Entry item in alldata.entries)
+            {
+                <div class="card m-4">
+                    <div class="card-header">
+                        <h2 class="card-title">@item.API</h2>
+                        <h3 class="text-muted">@item.Category</h3>
+                    </div>
                     <div class="card-body">
-                        <h2 class="card-title">
-                            @item.API
-                        </h2>
-                        <h3 class="text-muted">
-                            @item.Category
-                        </h3>
-                        <p class="card-text">
-                            @item.Description
-                        </p>
+                        <p class="card-text">@item.Description</p>
 
                         <hr />
 
@@ -101,21 +102,121 @@
                             </div>
                         </div>
 
+                        <div class="card-footer">
+                            <a href=@item.Link target="_blank">
+                                <button class="btn btn-success">
 
-                        <a href=@item.Link target="_blank">
-                            <button class="btn btn-success">
+                                    View
+                                </button>
+                            </a>
+                        </div>
 
-                                View
-                            </button>
-                        </a>
                     </div>
-                    
                 </div>
-            
+            }
+        }
 
-            <div class="row"></div>
+        @if (isCategorySpecified == true)
+        {
+            @foreach (Entry item in alldata.entries)
+            {
+                <div class="card m-4">
+                    <div class="card-header">
+                        <h2 class="card-title">@item.API</h2>
+                        <h3 class="text-muted">@item.Category</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@item.Description</p>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="font-weight-bold">HTTPS:</p>
+                            </div>
+
+
+
+                            <div class="col-sm-4">
+                                @if (item.HTTPS == true)
+                                {
+                                    <span class="oi oi-check"></span>
+                                }
+                                @if (item.HTTPS == false)
+                                {
+                                    <span class="oi oi-x"></span>
+                                }
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="font-weight-bold">CORS:</p>
+                            </div>
+
+
+
+                            <div class="col-sm-4">
+                                @if (item.Cors == "yes")
+                                {
+                                    <span class="oi oi-check"></span>
+                                }
+                                @if (item.Cors == "no")
+                                {
+                                    <span class="oi oi-x"></span>
+                                }
+                                @if (item.Cors == "unknown")
+                                {
+                                    <span class="oi oi-question-mark"></span>
+                                }
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="font-weight-bold">Authorisation:</p>
+                            </div>
+
+
+
+                            <div class="col-sm-4">
+                                @if (item.Auth == "apiKey")
+                                {
+                                    <p>API Key</p>
+                                }
+                                @if (item.Auth == "OAuth")
+                                {
+                                    <p>OAuth</p>
+                                }
+                                @if (item.Auth == "")
+                                {
+                                    <p>None</p>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <a href=@item.Link target="_blank">
+                                <button class="btn btn-success">
+
+                                    View
+                                </button>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            }
         }
     </div>
+
+    
+
+</div>
     
   
 }
@@ -124,8 +225,11 @@
 
 @code {
     private Root alldata;
-    IEnumerable<Entry> apis;
-    
+    List<String> Categories = new List<String>();
+    List<Entry> SelectedCategories = new List<Entry>();
+
+    bool isCategorySpecified = false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -133,12 +237,33 @@
         {
             alldata = await Http.GetFromJsonAsync<Root>("https://api.publicapis.org/entries");
             Console.WriteLine(alldata.count);
-            apis = alldata.entries;
+
+            foreach (Entry item in alldata.entries)
+            {
+                if (!Categories.Contains(item.Category))
+                {
+                    Categories.Add(item.Category);
+                }
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
 
+        }
+    }
+
+    public void GetSelectedCategory(String Category)
+    {
+        SelectedCategories.Clear();
+
+        isCategorySpecified = true;
+        foreach (Entry item in alldata.entries)
+        {
+            if(item.Category == Category)
+            {
+                SelectedCategories.Add(item);
+            }
         }
     }
 
