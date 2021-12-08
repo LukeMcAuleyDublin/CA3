@@ -12,204 +12,205 @@
 
     <div class="col-2">
         <h3>Categories</h3>
+        @if (isCategorySpecified == true)
+        {
+            <button class="btn btn-info m-1" @onclick="ResetAPIs" >View All</button>
+        }
         @foreach (String Cat in Categories)
         {
-            <button class="btn btn-success m-1" @onclick="@(() => GetSelectedCategory(Cat))">@Cat</button>
+            <button class="btn btn-success m-1" @onclick="@(e => GetSelectedCategory(Cat))">@Cat</button>
         }
     </div>
 
     <div class="col-10">
         @if (isCategorySpecified == false)
         {
-            @foreach (Entry item in alldata.entries)
+            @foreach (Entry item in apis)
             {
-                <div class="card m-4">
-                    <div class="card-header">
-                        <h2 class="card-title">@item.API</h2>
-                        <h3 class="text-muted">@item.Category</h3>
+        <div class="card m-4">
+            <div class="card-header">
+                <h2 class="card-title">@item.API</h2>
+                <h3 class="text-muted">@item.Category</h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">@item.Description</p>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <p class="font-weight-bold">HTTPS:</p>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">@item.Description</p>
-
-                        <hr />
-
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <p class="font-weight-bold">HTTPS:</p>
-                            </div>
 
 
 
-                            <div class="col-sm-4">
-                                @if (item.HTTPS == true)
-                                {
-                                    <span class="oi oi-check"></span>
-                                }
-                                @if (item.HTTPS == false)
-                                {
-                                    <span class="oi oi-x"></span>
-                                }
-                            </div>
-                        </div>
-
-                        <hr />
-
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <p class="font-weight-bold">CORS:</p>
-                            </div>
-
-
-
-                            <div class="col-sm-4">
-                                @if (item.Cors == "yes")
-                                {
-                                    <span class="oi oi-check"></span>
-                                }
-                                @if (item.Cors == "no")
-                                {
-                                    <span class="oi oi-x"></span>
-                                }
-                                @if (item.Cors == "unknown")
-                                {
-                                    <span class="oi oi-question-mark"></span>
-                                }
-                            </div>
-                        </div>
-
-                        <hr />
-
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <p class="font-weight-bold">Authorisation:</p>
-                            </div>
-
-
-
-                            <div class="col-sm-4">
-                                @if (item.Auth == "apiKey")
-                                {
-                                    <p>API Key</p>
-                                }
-                                @if (item.Auth == "OAuth")
-                                {
-                                    <p>OAuth</p>
-                                }
-                                @if (item.Auth == "")
-                                {
-                                    <p>None</p>
-                                }
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <a href=@item.Link target="_blank">
-                                <button class="btn btn-success">
-
-                                    View
-                                </button>
-                            </a>
-                        </div>
-
+                    <div class="col-sm-4">
+                        @if (item.HTTPS == true)
+                        {
+                            <span class="oi oi-check"></span>
+                        }
+                        @if (item.HTTPS == false)
+                        {
+                            <span class="oi oi-x"></span>
+                        }
                     </div>
                 </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <p class="font-weight-bold">CORS:</p>
+                    </div>
+
+
+
+                    <div class="col-sm-4">
+                        @if (item.Cors == "yes")
+                        {
+                            <span class="oi oi-check"></span>
+                        }
+                        @if (item.Cors == "no")
+                        {
+                            <span class="oi oi-x"></span>
+                        }
+                        @if (item.Cors == "unknown")
+                        {
+                            <span class="oi oi-question-mark"></span>
+                        }
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <p class="font-weight-bold">Authorisation:</p>
+                    </div>
+
+
+
+                    <div class="col-sm-4">
+                        @if (item.Auth == "apiKey")
+                        {
+                            <p>API Key</p>
+                        }
+                        @if (item.Auth == "OAuth")
+                        {
+                            <p>OAuth</p>
+                        }
+                        @if (item.Auth == "")
+                        {
+                            <p>None</p>
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <a href=@item.Link target="_blank">
+                    <button class="btn btn-success">
+
+                        View
+                    </button>
+                </a>
+            </div>
+        </div>
             }
         }
 
         @if (isCategorySpecified == true)
         {
-            @foreach (Entry item in alldata.entries)
+            @foreach (Entry item in apis)
             {
-                <div class="card m-4">
-                    <div class="card-header">
-                        <h2 class="card-title">@item.API</h2>
-                        <h3 class="text-muted">@item.Category</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">@item.Description</p>
+    <div class="card m-4">
+        <div class="card-header">
+            <h2 class="card-title">@item.API</h2>
+            <h3 class="text-muted">@item.Category</h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text">@item.Description</p>
 
-                        <hr />
+            <hr />
 
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <p class="font-weight-bold">HTTPS:</p>
-                            </div>
-
-
-
-                            <div class="col-sm-4">
-                                @if (item.HTTPS == true)
-                                {
-                                    <span class="oi oi-check"></span>
-                                }
-                                @if (item.HTTPS == false)
-                                {
-                                    <span class="oi oi-x"></span>
-                                }
-                            </div>
-                        </div>
-
-                        <hr />
-
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <p class="font-weight-bold">CORS:</p>
-                            </div>
-
-
-
-                            <div class="col-sm-4">
-                                @if (item.Cors == "yes")
-                                {
-                                    <span class="oi oi-check"></span>
-                                }
-                                @if (item.Cors == "no")
-                                {
-                                    <span class="oi oi-x"></span>
-                                }
-                                @if (item.Cors == "unknown")
-                                {
-                                    <span class="oi oi-question-mark"></span>
-                                }
-                            </div>
-                        </div>
-
-                        <hr />
-
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <p class="font-weight-bold">Authorisation:</p>
-                            </div>
-
-
-
-                            <div class="col-sm-4">
-                                @if (item.Auth == "apiKey")
-                                {
-                                    <p>API Key</p>
-                                }
-                                @if (item.Auth == "OAuth")
-                                {
-                                    <p>OAuth</p>
-                                }
-                                @if (item.Auth == "")
-                                {
-                                    <p>None</p>
-                                }
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <a href=@item.Link target="_blank">
-                                <button class="btn btn-success">
-
-                                    View
-                                </button>
-                            </a>
-                        </div>
-
-                    </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <p class="font-weight-bold">HTTPS:</p>
                 </div>
+
+
+
+                <div class="col-sm-4">
+                    @if (item.HTTPS == true)
+                    {
+                        <span class="oi oi-check"></span>
+                    }
+                    @if (item.HTTPS == false)
+                    {
+                        <span class="oi oi-x"></span>
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <p class="font-weight-bold">CORS:</p>
+                </div>
+
+
+
+                <div class="col-sm-4">
+                    @if (item.Cors == "yes")
+                    {
+                        <span class="oi oi-check"></span>
+                    }
+                    @if (item.Cors == "no")
+                    {
+                        <span class="oi oi-x"></span>
+                    }
+                    @if (item.Cors == "unknown")
+                    {
+                        <span class="oi oi-question-mark"></span>
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <p class="font-weight-bold">Authorisation:</p>
+                </div>
+
+
+
+                <div class="col-sm-4">
+                    @if (item.Auth == "apiKey")
+                    {
+                        <p>API Key</p>
+                    }
+                    @if (item.Auth == "OAuth")
+                    {
+                        <p>OAuth</p>
+                    }
+                    @if (item.Auth == "")
+                    {
+                        <p>None</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href=@item.Link target="_blank">
+                <button class="btn btn-success">
+                    View
+                </button>
+            </a>
+        </div>
+
+    </div>
             }
         }
     </div>
@@ -226,6 +227,7 @@
 @code {
     private Root alldata;
     List<String> Categories = new List<String>();
+    List<Entry> apis = new List<Entry>();
     List<Entry> SelectedCategories = new List<Entry>();
 
     bool isCategorySpecified = false;
@@ -233,9 +235,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        isCategorySpecified = false;
         try
         {
             alldata = await Http.GetFromJsonAsync<Root>("https://api.publicapis.org/entries");
+
             Console.WriteLine(alldata.count);
 
             foreach (Entry item in alldata.entries)
@@ -244,6 +248,8 @@
                 {
                     Categories.Add(item.Category);
                 }
+
+                apis.Add(item);
             }
         }
         catch (Exception ex)
@@ -253,16 +259,25 @@
         }
     }
 
+    public void ResetAPIs()
+    {
+        apis.Clear();
+        foreach (Entry item in alldata.entries)
+        {
+            apis.Add(item);
+        }
+    }
+
     public void GetSelectedCategory(String Category)
     {
-        SelectedCategories.Clear();
-
+        apis.Clear();
         isCategorySpecified = true;
+
         foreach (Entry item in alldata.entries)
         {
             if(item.Category == Category)
             {
-                SelectedCategories.Add(item);
+                apis.Add(item);
             }
         }
     }
