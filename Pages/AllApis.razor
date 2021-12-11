@@ -298,11 +298,4 @@
         public int count { get; set; }
         public List<Entry> entries { get; set; }
     }
-
-    void OnChange(object value, string name)
-    {
-        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
-
-        Console.WriteLine($"{name} value changed to {str}");
-    }
 }
